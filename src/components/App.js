@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import "../styles/App.css";
 
 const characters = [
@@ -133,12 +133,52 @@ const App = () => {
   };
 
   const scoreHandler = (e) => {
-   
+    if(e.target.name == currChar.name){
+      setScore(score+1);
+    }else{
+      setScore(score-1);
+    }
   };
 
-  useEffect(() => {
-   
-  });
+    let len = characters.length;
+    let randomIndx = Math.floor(Math.random()*(len-0)+0);
+    console.log("random idx",randomIndx);
+
+    let arr = [];
+    let x = randomIndx;
+
+    while(arr.length<4){
+      if (x<15) {
+        arr.push(x);
+        x++;
+        console.log(x+"value of x");
+      }
+      else{
+        arr.push(x);
+        x= 0;
+        x++;
+      }
+    }
+  
+    
+    
+    //options
+    let opt1 = characters[arr[0]];
+    let opt2 = characters[arr[1]];
+    let opt3 = characters[arr[2]];
+    let opt4 = characters[arr[3]];
+    
+    
+    useEffect(() => {
+      let data = characters[randomIndx];
+      setCurrChar({
+        name: data.name,
+        role: data.role,
+        abilities: [...data.abilities],
+        options: [opt1,opt2,opt3,opt4]
+      })
+    },[score]);
+    
   return (
     <div id="main">
       <div className="container">
@@ -150,7 +190,7 @@ const App = () => {
           {currChar.abilities.join()}
           <div className="options">
             {currChar.options.map((option) => (
-              <button   onClick={scoreHandler}>
+              <button  name={option.name} onClick={scoreHandler}>
                 {option.name}
               </button>
             ))}
